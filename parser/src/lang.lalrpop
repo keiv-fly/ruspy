@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use ast::{Expr, Opcode};
+use crate::ast::{Expr, Opcode, Assignment, AssignCode};
 use lalrpop_util::ErrorRecovery;
 
 grammar<'err>(errors: &'err mut Vec<ErrorRecovery<usize, Token<'input>, &'static str>>);
@@ -17,12 +17,14 @@ Comma<T>: Vec<T> = { // (0)
     }
 };
 
+
+
 Tier<Op,NextTier>: Box<Expr> = {
     Tier<Op,NextTier> Op NextTier => Box::new(Expr::Op(<>)),
     NextTier
 };
 
-Expr = Tier<ExprOp, Factor>;
+pub Expr = Tier<ExprOp, Factor>;
 Factor = Tier<FactorOp, Term>;
 
 ExprOp: Opcode = { // (3)
@@ -38,9 +40,21 @@ FactorOp: Opcode = {
 Term: Box<Expr> = {
     Num => Box::new(Expr::Number(<>)),
     "(" <Expr> ")",
-    ! => { errors.push(<>); Box::new(Expr::Error) },
+//    ! => { errors.push(<>); Box::new(Expr::Error) },
 };
 
 Num: i32 = {
     r"[0-9]+" => i32::from_str(<>).unwrap()
+};
+
+pub Asgnmnt: Assignment<'input> = { 
+    VarIdent AssignOp Expr => Assignment::Op2(<>), 
+};
+
+VarIdent: &'input str = {
+    r"[A-Za-z][0-9A-Za-z_]*|_[0-9A-Za-z_]+" => <>
+};
+
+AssignOp: AssignCode = {
+    "=" => AssignCode::Assign,
 };

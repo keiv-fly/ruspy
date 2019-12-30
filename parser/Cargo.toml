@@ -1,9 +1,9 @@
 [package]
-name = "ruspy"
+name = "ruspy_parser"
 version = "0.1.0"
 authors = ["Keiv <keiv-fly@github.com>"]
 edition = "2018"
-# build = "build.rs" # LALRPOP preprocessing
+build = "build.rs" # LALRPOP preprocessing
 
 [dependencies]
 regex = "1"

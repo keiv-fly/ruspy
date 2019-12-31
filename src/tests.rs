@@ -11,7 +11,7 @@ fn test1() {
             vec![
                 (Tokens::Identifier("x"), 0),
                 (Tokens::EqSign, 2),
-                (Tokens::Int32(1), 4)
+                (Tokens::Int64(1), 4)
             ],
             0
         )]
@@ -27,8 +27,8 @@ fn test2() {
         vec![(
             vec![
                 (Tokens::Identifier("x"), 0),
-                (Tokens::EqSign, 2),
-                (Tokens::Int32(1), 4)
+                (Tokens::EqSign, 1),
+                (Tokens::Int64(1), 2)
             ],
             0
         )]

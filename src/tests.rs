@@ -1,21 +1,36 @@
+use crate::tokenizer;
+use crate::tokenizer::Tokens;
+
 #[test]
-fn calculator0() {
-    let mut errors = Vec::new();
+fn test1() {
+    let s = "x = 1";
+    let res = tokenizer::run(s).unwrap();
+    assert_eq!(
+        res,
+        vec![(
+            vec![
+                (Tokens::Identifier("x"), 0),
+                (Tokens::EqSign, 2),
+                (Tokens::Int32(1), 4)
+            ],
+            0
+        )]
+    );
+}
 
-    let expr = calculator6::ExprsParser::new()
-        .parse(&mut errors, "22 * + 3")
-        .unwrap();
-    assert_eq!(&format!("{:?}", expr), "[((22 * error) + 3)]");
-
-    let expr = calculator6::ExprsParser::new()
-        .parse(&mut errors, "22 * 44 + 66, *3")
-        .unwrap();
-    assert_eq!(&format!("{:?}", expr), "[((22 * 44) + 66), (error * 3)]");
-
-    let expr = calculator6::ExprsParser::new()
-        .parse(&mut errors, "*")
-        .unwrap();
-    assert_eq!(&format!("{:?}", expr), "[(error * error)]");
-
-    assert_eq!(errors.len(), 4);
+#[test]
+fn test2() {
+    let s = "x=1";
+    let res = tokenizer::run(s).unwrap();
+    assert_eq!(
+        res,
+        vec![(
+            vec![
+                (Tokens::Identifier("x"), 0),
+                (Tokens::EqSign, 2),
+                (Tokens::Int32(1), 4)
+            ],
+            0
+        )]
+    );
 }

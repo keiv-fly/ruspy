@@ -1,9 +1,6 @@
-use regex::Regex;
+mod tests;
+mod tokenizer;
 
-pub enum Type {
-    I32(i32),
-    F64(f64),
-    Str(String),
+fn main() {
+    println!("{:?}", tokenizer::run("x = 1"));
 }
-
-fn main() {}

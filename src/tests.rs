@@ -109,3 +109,59 @@ mod parser_tests {
         );
     }
 }
+
+use crate::env::{BaseTypeEnum, Env, StringT};
+use crate::vm::VM;
+use std::cell::RefCell;
+
+#[test]
+fn test1() {
+    let mut env = Env::new();
+    env.globals.insert(
+        "x".to_string(),
+        RefCell::new(BaseTypeEnum::Str(StringT::Str(Box::new(String::from(
+            "abcdef",
+        ))))),
+    );
+    let res = env.globals.remove("x").unwrap().into_inner();
+    assert_eq!(
+        res,
+        BaseTypeEnum::Str(StringT::Str(Box::new(String::from("abcdef"))))
+    );
+}
+
+#[test]
+pub fn test2() {
+    use std::cell::RefCell;
+    use std::collections::HashMap;
+    struct Str(String);
+
+    impl Drop for Str {
+        fn drop(&mut self) {
+            println!("Dropped")
+        }
+    }
+
+    {
+        let mut m = HashMap::new();
+        m.insert("x", RefCell::new(Str("hello".to_string())));
+        println!("1");
+        m.remove("x");
+        println!("2");
+        assert_eq!(1, 1);
+    }
+    println!("3");
+    //Out:
+    // 1
+    // Dropped
+    // 2
+    // 3
+}
+
+#[test]
+fn test3() {
+    let s = "1 + 1";
+    let vm = VM::new();
+    let res = vm.execute(s);
+    assert_eq!(1i64, 2i64);
+}

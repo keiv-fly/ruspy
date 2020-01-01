@@ -1,8 +1,10 @@
+mod env;
 mod tokenizer;
+mod vm;
 
 #[cfg(test)]
 mod tests;
 
 fn main() {
-    println!("{:?}", tokenizer::run("x = 1"));
+    //    tests::test2();
 }

@@ -7,6 +7,7 @@ pub enum Tokens<'a> {
     Float64(f64),
     Identifier(&'a str),
     EqSign,
+    OpPlus,
     Error(String, usize, usize, usize),
     // Unimplemented,
 }
@@ -70,6 +71,10 @@ pub fn run(input_string: &str) -> Result<Vec<Vec<(Tokens, usize)>>, Box<dyn Erro
                     '0'..='9' => get_number(&mut pit),
                     // string
                     '"' => get_string(&mut pit),
+                    '+' => {
+                        pit.next();
+                        Tokens::OpPlus
+                    }
                     // Equal sign
                     '=' => {
                         pit.next();
